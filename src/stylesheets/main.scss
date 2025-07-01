@@ -1,46 +1,53 @@
-// Your styles go here
+
+/*
+  Sass modules,
+  imports rule for navigation bar
+  imports variables used for colors
+*/ 
+@use 'nav';
+
+@use 'variables';
+
+
+
+
 body {
   background: #202020 url('/images/footer-bg.jpg') repeat;
   min-width: 1200px;
   margin: 0;
   padding: 0;
+  /* input, techarea and select tags nested in the body for better readability 
+  */
+  &, input, textarea, select {
+    font-family: 'Roboto Condensed', sans-serif;
+    font-weight: 300;
+    font-size: 11pt;
+    line-height: 1.75em;
+  }
 }
 
-body,
-input,
-textarea,
-select {
-  font-family: 'Roboto Condensed', sans-serif;
-  font-weight: 300;
-  font-size: 11pt;
-  line-height: 1.75em;
-}
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
+h1, h2, h3, h4, h5, h6 {
   letter-spacing: 1px;
   text-transform: uppercase;
   font-weight: 300;
+
+  // anchor tags nested in the h1 thru h6 for better readability 
+  a {
+    /* gets color from parent element,
+    in this case its from the h1 thru h6 
+    */
+    color: inherit;
+    // gets rid of underline 
+    text-decoration: none;
+  }
 }
 
-h1 a,
-h2 a,
-h3 a,
-h4 a,
-h5 a,
-h6 a {
-  color: inherit;
-  text-decoration: none;
-}
 
 strong,
 b {
   font-weight: bold;
-  color: #000000;
+  color: variables.$bold;
 }
 
 em,
@@ -49,7 +56,7 @@ i {
 }
 
 a {
-  color: #0d6efd;
+  color: variables.$blue;
 }
 
 sub {
@@ -66,7 +73,7 @@ sup {
 
 hr {
   border: 0;
-  border-top: solid 1px #ddd;
+  border-top: solid 1px variables.$grey;
 }
 
 p,
@@ -120,44 +127,49 @@ footer {
   margin-top: 1em;
 }
 
+// nested code for better readability 
 .container {
   width: 1200px;
   margin-left: auto;
   margin-right: auto;
+    &.small {
+      width: 900px;
+    }
+
+    &.big {
+      width: 100%;
+      max-width: 1500px;
+      min-width: 1200px;
+    }
 }
 
-.container.small {
-  width: 900px;
-}
-
-.container.big {
-  width: 100%;
-  max-width: 1500px;
-  min-width: 1200px;
-}
-
-.row section,
-.row article {
-  margin-bottom: 0;
-}
-
-.row [class*='column-'] {
-  padding: 50px 0 0 50px;
-  float: left;
-  box-sizing: border-box;
-}
-
+// nested code for better readability 
 .row {
   margin-left: -50px;
+
+    section, article {
+      margin-bottom: 0;
+    
+  }
+    [class*='column-'] {
+      padding: 50px 0 0 50px;
+      float: left;
+      box-sizing: border-box;
+  }
+
+    &:after {
+      content: '';
+      display: block;
+      clear: both;
+      height: 0;
+  }
+
 }
 
-.row:after {
-  content: '';
-  display: block;
-  clear: both;
-  height: 0;
-}
 
+
+
+// list to be used in loop 
 .column-1,
 .column-2,
 .column-3,
@@ -173,336 +185,266 @@ footer {
 }
 
 @media all and (min-width: 576px) {
-  .column-1 {
-    width: 8.33333%;
-  }
-
-  .column-2 {
-    width: 16.66667%;
-  }
-
-  .column-3 {
-    width: 25%;
-  }
-
-  .column-4 {
-    width: 33.33333%;
-  }
-
-  .column-5 {
-    width: 41.66667%;
-  }
-
-  .column-6 {
-    width: 50%;
-  }
-
-  .column-7 {
-    width: 58.33333%;
-  }
-
-  .column-8 {
-    width: 66.66667%;
-  }
-
-  .column-9 {
-    width: 75%;
-  }
-
-  .column-10 {
-    width: 83.33333%;
-  }
-
-  .column-11 {
-    width: 91.66667%;
-  }
-
-  .column-12 {
-    width: 100%;
+  /* instead of manually writing out the width for each column, 
+  this loop goes thru the 12 comlumn classes and gives it a new width,
+  the width is found by dividing 100% over 12 and then multiplying the result by the number of columns
+  */
+  @for $i from 1 through 12 {
+    .column-#{$i} {
+      /*
+      using calc function per deprecation warning in terminal
+      */
+      width: calc(100% / 12) * $i;
+    }
   }
 }
 
+// nested code for better readability 
 .image {
   display: inline-block;
+    img {
+      display: block;
+      width: 100%;
+  }
+
+    &.featured {
+      display: block;
+      width: 100%;
+      margin: 0 0 2em 0;
+  }
+    &.full {
+      display: block;
+      width: 100%;
+      margin-bottom: 2em;
+  }
+    &.left {
+      float: left;
+      margin: 0 2em 2em 0;
+  }
+
+    &.centered {
+      display: block;
+      margin: 0 0 2em 0;
+  }
+    &.centered img {
+      margin: 0 auto;
+      width: auto;
+  }
+
 }
 
-.image img {
-  display: block;
-  width: 100%;
+// nested code for better readability 
+ul {
+  &.default,
+  &.style1,
+  &.style2,
+  &.style5 {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  &.default {
+    li {
+      display: block;
+      padding: 2em 0 1.25em 0;
+      border-top: 1px solid variables.$lightBlack;
+
+      &:first-child {
+        padding-top: 0;
+        border-top: none;
+      }
+    }
+
+    a {
+      text-decoration: none;
+      color: variables.$transparentGrey;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  &.style1 {
+    li {
+      padding: 0.6em 0;
+      border-top: 1px solid rgba(0, 0, 0, 0.1);
+
+      &:first-child {
+        padding-top: 0;
+        border-top: 0;
+      }
+    }
+  }
+
+  &.style2 {
+    li {
+      padding: 1.9em 0 1.6em 0;
+      border-top: 1px solid rgba(0, 0, 0, 0.1);
+
+      &:first-child {
+        padding-top: 0;
+        border-top: 0;
+      }
+    }
+
+    img {
+      float: left;
+      padding-right: 1em;
+    }
+  }
+
+  &.style5 {
+    overflow: hidden;
+    margin: 0 0 1em 0;
+    padding: 0;
+
+    li {
+      float: left;
+      padding: 0.25em;
+      line-height: 0;
+    }
+  }
 }
 
-.image.featured {
-  display: block;
-  width: 100%;
-  margin: 0 0 2em 0;
-}
-
-.image.full {
-  display: block;
-  width: 100%;
-  margin-bottom: 2em;
-}
-
-.image.left {
-  float: left;
-  margin: 0 2em 2em 0;
-}
-
-.image.centered {
-  display: block;
-  margin: 0 0 2em 0;
-}
-
-.image.centered img {
-  margin: 0 auto;
-  width: auto;
-}
-
-ul.default {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-ul.default li {
-  display: block;
-  padding: 2em 0em 1.25em 0em;
-  border-top: 1px solid #303030;
-}
-
-ul.default li:first-child {
-  padding-top: 0em;
-  border-top: none;
-}
-
-ul.default a {
-  text-decoration: none;
-  color: rgba(255, 255, 255, .5);
-}
-
-ul.default a:hover {
-  text-decoration: underline;
-}
-
-ul.style1 {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-ul.style1 li {
-  padding: 0.60em 0em;
-  border-top: 1px solid;
-  border-color: rgba(0, 0, 0, .1);
-}
-
-ul.style1 li:first-child {
-  padding-top: 0;
-  border-top: 0;
-}
-
-ul.style2 {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-ul.style2 li {
-  padding: 1.90em 0em 1.60em 0em;
-  border-top: 1px solid;
-  border-color: rgba(0, 0, 0, .1);
-}
-
-ul.style2 li:first-child {
-  padding-top: 0;
-  border-top: 0;
-}
-
-ul.style2 img {
-  float: left;
-  padding-right: 1em;
-}
-
-ul.style5 {
-  overflow: hidden;
-  margin: 0em 0em 1em 0em;
-  padding: 0em;
-  list-style: none;
-}
-
-ul.style5 li {
-  float: left;
-  padding: 0.25em 0.25em;
-  line-height: 0;
-}
-
+// hover state nested in button class for better readability 
 .button {
   position: relative;
   display: inline-block;
   margin-top: 0.5em;
   padding: 0.50em 1.5em;
-  background: #0d6efd;
+  background: variables.$blue;
   border-radius: 6px;
   text-decoration: none;
   text-transform: uppercase;
   font-size: 1.1em;
-  color: #FFF;
+  color: variables.$white;
   transition: color 0.35s ease-in-out, background-color 0.35s ease-in-out;
   cursor: pointer;
+
+  &:hover {
+    background: variables.$blue;
+    color: variables.$white !important;
+  }
 }
 
-.button:hover {
-  background: #0d6efd;
-  color: #FFF !important;
-}
 
+// nested code for better readability
 .header {
   position: relative;
-  background: #FFF;
+  background: variables.$white;
+  .container {
+    position: relative;
+    padding: 4em 0em;
+  }
 }
 
-.header .container {
-  position: relative;
-  padding: 4em 0em;
-}
-
+// nested code for better readability
 .logo {
   position: absolute;
   left: 0em;
   top: 3em;
+  & a {
+    display: block;
+    text-decoration: none;
+    font-size: 2.8em;
+    font-weight: 600;
+  }
 }
 
-.logo a {
-  display: block;
-  text-decoration: none;
-  font-size: 2.8em;
-  font-weight: 600;
-}
 
-.nav {
-  position: absolute;
-  right: 0em;
-  top: 2.2em;
-}
 
-.nav ul {
-  list-style-type: none;
-}
-
-.nav ul li {
-  float: left;
-}
-
-.nav ul li:last-child {
-  padding-right: 0;
-}
-
-.nav ul li a,
-.nav ul li span {
-  display: block;
-  margin-left: 0.7em;
-  padding: 0.80em 1.2em;
-  letter-spacing: 0.06em;
-  text-decoration: none;
-  text-transform: uppercase;
-  font-size: 1.1em;
-  outline: 0;
-  color: #333;
-}
-
-.nav li.active a {
-  background: #0d6efd;
-  border-radius: 5px;
-  color: #FFF;
-}
 
 .banner {
   position: relative;
   padding: 12em 0em;
   background: url('/images/banner.jpg') no-repeat center;
   background-size: cover;
-  color: #fff;
+  color: variables.$white;
 }
 
 .page {
   position: relative;
-  background: #fff;
+  background: variables.$white;
 }
 
 .main {
   border-top: 1px solid;
-  border-color: rgba(0, 0, 0, .2);
+  border-color: variables.$transparentBlack;
 }
 
 .sidebar header h2 {
   font-size: 1.6em;
 }
 
+// nested code for better readability
 .footer {
   position: relative;
-  color: rgba(255, 255, 255, .4);
+  color: variables.$darkTransparentGrey;
+    h2 {
+      padding-bottom: 1.5em;
+      font-size: 1.6em;
+      color: variables.$white;
+  }
+    strong {
+    color: variables.$lightTransparentBlack;
+  }
 }
 
-.footer h2 {
-  padding-bottom: 1.5em;
-  font-size: 1.6em;
-  color: #FFF;
-}
-
-.footer strong {
-  color: rgba(255, 255, 255, .7);
-}
-
+// nested code for better readability
 .copyright {
   position: relative;
   padding: 3em 0em;
-  border-top: 1px solid #303030;
+  border-top: 1px solid variables.$lightTransparentBlack;
   letter-spacing: 1px;
   text-align: center;
-  color: rgba(255, 255, 255, .4);
+  color: variables.$darkTransparentGrey;
+
+    a {
+      text-decoration: none;
+      color: variables.$darkTransparentGrey !important;
+  }
 }
 
-.copyright a {
-  text-decoration: none;
-  color: rgba(255, 255, 255, .4) !important;
-}
 
+// nested code for better readability
 .marketing {
   position: relative;
+  header h2 {
+    font-size: 1.6em;
+  }
 }
 
-.marketing header h2 {
-  font-size: 1.6em;
-}
-
+// nested code for better readability
 .featured {
   position: relative;
+
+  .divider {
+    border-bottom: 1px solid variables.$lightTransparentBlack;
+  }
+
+  .box {
+    background: variables.$white;
+    padding: 1.4em;
+    font-size: 0.95em;
+    border-radius: 5px;
+  }
 }
 
-.featured .divider {
-  border-bottom: 1px solid #303030;
-}
-
-.featured .box {
-  background: #FFF;
-  padding: 1.4em;
-  font-size: 0.95em;
-  border-radius: 5px;
-}
-
+// nested code for better readability
 .balloon {
   padding: 1.87em;
   background: url('/images/balloon-bg.jpg') repeat left top;
   border-radius: 5px;
   line-height: 180%;
   font-size: 1.2em;
-  color: #333;
+  color: variables.$darkTransparentBlack;
+  strong {
+    color: variables.$darkTransparentBlack !important;
+  }
 }
 
 .ballon-bgbtm {
   height: 1.87em;
-}
-
-.balloon strong {
-  color: #333 !important;
 }
